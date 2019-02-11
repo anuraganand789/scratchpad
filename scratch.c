@@ -22,19 +22,36 @@ void main() {
       delch();
       break;
     case KEY_LEFT :
-      
-          case KEY_LEFT :
-	        case KEY_LEFT :
-	        case KEY_LEFT :
-    }
-    
-    if(ch == KEY_BACKSPACE) {
-      delch();
-    } else {
+      getyx(stdscr, cur_y, cur_x);
+      if(cur_x > 0) {
+	move(cur_y, cur_x - 1);
+      }
+      break;
+    case KEY_RIGHT :
+      getyx(stdscr, cur_y, cur_x);
+      if(cur_x < MAX_X) {
+	move(cur_y, cur_x + 1);
+      }
+      break;
+    case KEY_UP :
+      getyx(stdscr, cur_y, cur_x);
+      if(cur_y > 0) {
+	move(cur_y - 1, cur_x);
+      }
+      break;
+    case KEY_DOWN :
+      getyx(stdscr, cur_y, cur_x);
+      if(cur_y < MAX_Y) {
+	move(cur_y + 1, cur_x);
+      }
+      break;
+    default :
       printw("%c", ch);
+      break;
     }
   }
-  
   endwin();
   return;
 }
+
+
