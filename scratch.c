@@ -31,9 +31,16 @@ void main() {
 
   //Display keyboad shortcuts
   messageBoard(message, MAX_X);
-  
-  while((ch = getch()) != KEY_F(3)) {
+
+  while(1) {
+
+    //Read key presses
+    ch = getch();
+    
     switch(ch) {
+    default :
+      printw("%c", ch);
+      break;
     case KEY_BACKSPACE :
       //Imitation of backspace
       //1. move the cursor to the left
@@ -86,11 +93,15 @@ void main() {
       //      doupdate();
       refresh();
       break;
-    default :
-      printw("%c", ch);
-      break;
+    case KEY_F(3) :
+      //remove the dump file before exiting
+      remove(dumpFileName);
+      //Exit application
+      goto EndScratchPad;
     }
   }
+
+ EndScratchPad :
   endwin();
   return;
 }
