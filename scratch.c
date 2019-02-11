@@ -1,11 +1,17 @@
 #include <ncurses.h>
+#include <string.h>
 
-const char *message = "F1 : Clear Screen, F2 : Exit\n";
+static const char *message = "F1 : Clear Screen, F2 : Undo Clear Screen, F3 : Exit\n";
+static const char *dumpFileName = "/home/anuraganand/mytools/screendump.dump";
 
-void messageBoard(char *, int);
+static int messageLength = 0;
+
+void messageBoard(const char *, int);
 
 void main() {
 
+  messageLength = strlen(message);
+  
   int ch;
   initscr();
   cbreak();
@@ -26,7 +32,7 @@ void main() {
   //Display keyboad shortcuts
   messageBoard(message, MAX_X);
   
-  while((ch = getch()) != KEY_F(2)) {
+  while((ch = getch()) != KEY_F(3)) {
     switch(ch) {
     case KEY_BACKSPACE :
       //Imitation of backspace
@@ -63,9 +69,23 @@ void main() {
       }
       break;
     case KEY_F(1) :
+      //Store screen content in a file
+      scr_dump(dumpFileName);
+      //clean current screen
       clear();
+      //Handle the case for resizing of screen
+      getmaxyx(stdscr, MAX_Y, MAX_X);
+      //display message - keyboard shortcuts - or that can be anything
       messageBoard(message, MAX_X);
+      //refresh the screen buffer.
       refresh();
+      break;
+    case KEY_F(2) :
+      //restore the screen from the previous dump
+      scr_restore(dumpFileName);
+      //      doupdate();
+      refresh();
+      break;
     default :
       printw("%c", ch);
       break;
@@ -76,9 +96,9 @@ void main() {
 }
 
 
-void  messageBoard(char *message, const int MAX_X) {
+void  messageBoard(const char *message, const int MAX_X) {
   //Cursor of user should not able to allowed in these two lines
-  mvprintw(0, ((MAX_X / 2) - strlen(message)) , message);
+  mvprintw(0, ((MAX_X / 2) - messageLength) , message);
   hline('-', MAX_X);
   
   //Move two lines below. -- now top two lines are out of bounds for the user.
