@@ -9,7 +9,7 @@ static int messageLength = 0;
 void messageBoard(const char *, int);
 
 void main() {
-
+  MEVENT mevent;
   messageLength = strlen(message);
   
   int ch;
@@ -18,6 +18,9 @@ void main() {
   noecho();
   keypad(stdscr, TRUE);
 
+  //INIT MOUSE CONTROL
+  mousemask(BUTTON1_CLICKED, NULL);
+  
   int MIN_X = 0;
   //We are going to use two lines to display keyboard shortcuts
   int MIN_Y = 2;
@@ -98,6 +101,15 @@ void main() {
       remove(dumpFileName);
       //Exit application
       goto EndScratchPad;
+    case KEY_MOUSE :
+      if(getmouse(&mevent) == OK) {
+	if(mevent.bstate & BUTTON1_CLICKED) {
+	  if(mevent.y > MIN_Y) {
+	    move(mevent.y, mevent.x);
+	  }
+	}
+      }
+      break;
     }
   }
 
