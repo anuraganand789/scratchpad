@@ -25,3 +25,5 @@ This image is taken after, I cleared the previous screen.
 
 This image is taken after restoration of old screen :)
 ![Restored Screen](https://github.com/anuraganand789/scratchpad/blob/master/images/Screenshot%20from%202019-02-12%2000-23-27.png)
+
+And, we can use mouse to point and click to move cursor to the desired location.
