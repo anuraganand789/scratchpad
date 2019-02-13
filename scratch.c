@@ -102,12 +102,10 @@ void main() {
       //Exit application
       goto EndScratchPad;
     case KEY_MOUSE :
-      if(getmouse(&mevent) == OK) {
-	if(mevent.bstate & BUTTON1_CLICKED) {
-	  if(mevent.y > MIN_Y) {
-	    move(mevent.y, mevent.x);
-	  }
-	}
+      if(getmouse(&mevent) == OK
+	 && (mevent.bstate & BUTTON1_CLICKED)
+	 && (mevent.y > MIN_Y)) {
+	move(mevent.y, mevent.x);
       }
       break;
     }
